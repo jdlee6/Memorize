@@ -10,21 +10,25 @@ import SwiftUI
 
 struct ContentView: View {
     var viewModel: EmojiMemoryGame
-    
+
     var body: some View {
         HStack {
             ForEach(viewModel.cards) { card in
                 CardView(card: card).onTapGesture {
-                    // self is a Swift Error
                     self.viewModel.choose(card:card)
                 }
+                // Task: Ratio 2:3
+                .frame(width: 40, height: 60)
             }
         }
             .padding()
             .foregroundColor(Color.orange)
-            .font(Font.largeTitle)
+            // Task: if 5 pairs of cards -> change font size
+            .font(viewModel.cards.count == 10 ? Font.body: Font.largeTitle)
     }
 }
+
+
 
 struct CardView: View {
     var card: MemoryGame<String>.Card

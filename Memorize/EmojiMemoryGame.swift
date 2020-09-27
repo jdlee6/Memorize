@@ -9,21 +9,21 @@
 import SwiftUI
 
 class EmojiMemoryGame {
-    // in a class, you can NOT use any variables/functions until they are initialized
     private var model: MemoryGame<String> = EmojiMemoryGame.createMemoryGame()
     
-    // static functions - creates a function on this type (EmojiMemoryGame)
-    // instead of this function to an instance of MemoryGame we send it to the type
     static func createMemoryGame() -> MemoryGame<String> {
-        let emojis: Array<String> = ["🎃", "👻", "🕸"]
-        return MemoryGame<String>(numberOfPairsOfCards: emojis.count) { pairIndex in
+        // Task: Start game between random # between 2 and 5 pairs
+        let emojis: Array<String> = ["🎃", "👻", "🕸", "👼🏻", "🤩"]
+        let randomNumberOfPairsOfCards: Int = Int.random(in: 2...emojis.count)
+        return MemoryGame<String>(numberOfPairsOfCards: randomNumberOfPairsOfCards) { pairIndex in
             return emojis[pairIndex]
         }
     }
         
     // MARK: - Access to the the Model
     var cards: Array<MemoryGame<String>.Card> {
-        return model.cards
+        // Task: Shuffle the cards
+        return model.cards.shuffled()
     }
     
     // MARK: - Intent(s)
@@ -31,4 +31,10 @@ class EmojiMemoryGame {
         model.choose(card: card)
     }
     
+}
+
+struct EmojiMemoryGame_Previews: PreviewProvider {
+    static var previews: some View {
+        /*@START_MENU_TOKEN@*/Text("Hello, World!")/*@END_MENU_TOKEN@*/
+    }
 }

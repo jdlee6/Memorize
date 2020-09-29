@@ -17,10 +17,10 @@ struct EmojiMemoryGameView: View {
                 CardView(card: card).onTapGesture {
                     self.viewModel.choose(card:card)
                 }
-                // Task: Ratio 2:3
-                .frame(width: 40, height: 60)
             }
         }
+            // Task: Ratio 2:3
+            .aspectRatio(0.66, contentMode: .fit)
             .padding()
             .foregroundColor(Color.orange)
             // Task: if 5 pairs of cards -> change font size

@@ -33,16 +33,10 @@ struct Grid<Item, ItemView>: View where Item: Identifiable, ItemView: View {
     }
     
     func body(for item: Item, in layout: GridLayout) -> some View {
-        // the 'self' lets Swift know that we are referencing the function
-        // let index = self.index(of: item)
-        
-        // now to use our Array extension we can do
-        let index = items.firstIndex(matching: item)
-        
-        // offer space to these view
+        let index = items.firstIndex(matching: item)! // force unwrap the optional here
         return viewForItem(item)
-            .frame(width: layout.itemSize.width, height: layout.itemSize.height)
-            .position(layout.location(ofItemAt: index))
+                .frame(width: layout.itemSize.width, height: layout.itemSize.height)
+                .position(layout.location(ofItemAt: index))
     }
 }
 

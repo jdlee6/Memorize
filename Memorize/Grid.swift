@@ -17,7 +17,6 @@ struct Grid<Item, ItemView>: View where Item: Identifiable, ItemView: View {
         self.viewForItem = viewForItem
     }
     
-    
     var body: some View {
         GeometryReader { geometry in
             // Pass the GridLayout now instead of this size

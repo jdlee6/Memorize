@@ -38,6 +38,10 @@ class EmojiMemoryGame: ObservableObject {
         model.choose(card: card)
     }
     
+    func newGame() {
+        // **Todo: Create a newGame() function in the model
+        // model.newGame()
+    }
 }
 
 struct EmojiMemoryGame_Previews: PreviewProvider {

@@ -8,15 +8,15 @@
 
 import SwiftUI
 
-let animalCardColor: UIColor = .gray
-let sportCardColor: UIColor = .white
-let vehicleCardColor: UIColor = .yellow
+let animalCardColor: Color = .gray
+let sportCardColor: Color = .white
+let vehicleCardColor: Color = .yellow
 
 struct Theme {
     var name: String
     var emojiCards: Array<String>
     var numberOfCards: Int?
-    var cardColor: UIColor
+    var cardColor: Color
 }
 
 // 🐨🐭🙉🐔🦊 Animal Emojis
@@ -24,11 +24,11 @@ struct Theme {
 // 🚗🚕🚙🚌 Vehicle Emojis
 
 let animalTheme = Theme(name: "Animals", emojiCards: ["🐨","🐭","🙉","🐔","🦊"], cardColor: animalCardColor)
-let sportTheme = Theme(name: "Sports", emojiCards: ["⚾️","🎱","🏐","🏓"], numberOfCards: 8, cardColor: vehicleCardColor)
+let sportTheme = Theme(name: "Sports", emojiCards: ["⚾️","🎱","🏐","🏓"], numberOfCards: 4, cardColor: vehicleCardColor)
 let vehicleTheme = Theme(name: "Vehicles", emojiCards: ["🚗","🚕","🚙","🚌"], cardColor: vehicleCardColor)
 
 // Create an enum, cardTheme, which has a case for each theme I created
-internal enum colorTheme {
+internal enum colorTheme: CaseIterable {
     case animal, sport
     
     var type: Theme {
@@ -41,5 +41,4 @@ internal enum colorTheme {
     }
 }
 
-var currentTheme: colorTheme = .animal
-
+var currentTheme: colorTheme = .sport

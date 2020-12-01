@@ -12,13 +12,19 @@ class EmojiMemoryGame: ObservableObject {
     @Published private var model: MemoryGame<String> = EmojiMemoryGame.createMemoryGame()
     
     static func createMemoryGame() -> MemoryGame<String> {
-        // Task: Start game between random # between 2 and 5 pairs
-        let emojis: Array<String> = ["🎃", "👻", "🕸", "👼🏻", "🤩"]
-        let randomNumberOfPairsOfCards: Int = Int.random(in: 2...emojis.count)
-        return MemoryGame<String>(numberOfPairsOfCards: randomNumberOfPairsOfCards) { pairIndex in
-            return emojis[pairIndex]
+        // Task: Fetch emojis as well as # of cards from current theme 
+        let emojis: Array<String> = currentTheme.type.emojiCards
+        // Task: if 'numberOfCards' is given from the theme, use that if not, then pick a random number of pairs
+        if let randomNumberOfPairsOfCards: Int = currentTheme.type.numberOfCards {
+            return MemoryGame<String>(numberOfPairsOfCards: randomNumberOfPairsOfCards) { pairIndex in
+                return emojis[pairIndex]
+            }
+        } else {
+            return MemoryGame<String>(numberOfPairsOfCards: Int.random(in: 1..<(currentTheme.type.emojiCards.count * 2))) { pairIndex in
+                return emojis[pairIndex]
+                }
+            }
         }
-    }
         
     // MARK: - Access to the the Model
     var cards: Array<MemoryGame<String>.Card> {

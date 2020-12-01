@@ -14,7 +14,7 @@ class EmojiMemoryGame: ObservableObject {
     static func createMemoryGame() -> MemoryGame<String> {
         // Task: Fetch emojis as well as # of cards from current theme 
         let emojis: Array<String> = currentTheme.type.emojiCards
-        // Task: if 'numberOfCards' is given from the theme, use that if not, then pick a random number of pairs
+        // Task: if 'numberOfCards' is given from the theme, use that if not then pick a random number of pairs
         if let randomNumberOfPairsOfCards: Int = currentTheme.type.numberOfCards {
             return MemoryGame<String>(numberOfPairsOfCards: randomNumberOfPairsOfCards) { pairIndex in
                 return emojis[pairIndex]

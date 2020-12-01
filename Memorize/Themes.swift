@@ -25,6 +25,7 @@ struct Theme {
 
 let animalTheme = Theme(name: "Animals", emojiCards: ["🐨","🐭","🙉","🐔","🦊"], cardColor: animalCardColor)
 let sportTheme = Theme(name: "Sports", emojiCards: ["⚾️","🎱","🏐","🏓"], numberOfCards: 8, cardColor: vehicleCardColor)
+let vehicleTheme = Theme(name: "Vehicles", emojiCards: ["🚗","🚕","🚙","🚌"], cardColor: vehicleCardColor)
 
 // Create an enum, cardTheme, which has a case for each theme I created
 internal enum colorTheme {

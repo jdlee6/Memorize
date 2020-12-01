@@ -42,8 +42,18 @@ struct MemoryGame<CardContent> where CardContent: Equatable {
         }
     }
     
-    // **Todo
-     mutating func newGame() {}
+     mutating func newGame() {
+        // Reinitialize the game == turn all the cards face down
+        for index in 0..<cards.count {
+            self.cards[index].isFaceUp = false
+            self.cards[index].isMatched = false
+        }
+        
+        let newTheme = colorTheme.allCases.randomElement()!
+        currentTheme = newTheme
+    
+        // Todo: Figure out how to update cards & number of cards
+    }
     
     init(numberOfPairsOfCards: Int, cardContentFactory: (Int) -> CardContent) {
         cards = Array<Card>()

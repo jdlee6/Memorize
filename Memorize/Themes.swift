@@ -22,14 +22,13 @@ struct Theme {
 // 🐨🐭🙉🐔🦊 Animal Emojis
 // 🏈⚾️🎱🏐🏓 Sport Emojis
 // 🚗🚕🚙🚌 Vehicle Emojis
-
 let animalTheme = Theme(name: "Animals", emojiCards: ["🐨","🐭","🙉","🐔","🦊"], cardColor: animalCardColor)
 let sportTheme = Theme(name: "Sports", emojiCards: ["⚾️","🎱","🏐","🏓"], numberOfCards: 4, cardColor: vehicleCardColor)
 let vehicleTheme = Theme(name: "Vehicles", emojiCards: ["🚗","🚕","🚙","🚌"], cardColor: vehicleCardColor)
 
 // Create an enum, cardTheme, which has a case for each theme I created
 internal enum colorTheme: CaseIterable {
-    case animal, sport
+    case animal, sport, vehicle
     
     var type: Theme {
         switch self {
@@ -37,8 +36,10 @@ internal enum colorTheme: CaseIterable {
             return animalTheme
         case .sport:
             return sportTheme
+        case .vehicle:
+            return vehicleTheme
         }
     }
 }
 
-var currentTheme: colorTheme = .sport
+var currentTheme: colorTheme = .vehicle

@@ -20,7 +20,7 @@ class EmojiMemoryGame: ObservableObject {
                 return emojis[pairIndex]
             }
         } else {
-            return MemoryGame<String>(numberOfPairsOfCards: Int.random(in: 1..<(currentTheme.type.emojiCards.count * 2))) { pairIndex in
+            return MemoryGame<String>(numberOfPairsOfCards: Int.random(in: 2..<(currentTheme.type.emojiCards.count))) { pairIndex in
                 return emojis[pairIndex]
                 }
             }
@@ -39,8 +39,7 @@ class EmojiMemoryGame: ObservableObject {
     }
     
     func newGame() {
-        // **Todo: Create a newGame() function in the model
-        // model.newGame()
+         model.newGame()
     }
 }
 

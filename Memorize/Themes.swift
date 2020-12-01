@@ -9,7 +9,7 @@
 import SwiftUI
 
 let animalCardColor: Color = .gray
-let sportCardColor: Color = .white
+let sportCardColor: Color = .blue
 let vehicleCardColor: Color = .yellow
 
 struct Theme {
@@ -23,7 +23,7 @@ struct Theme {
 // 🏈⚾️🎱🏐🏓 Sport Emojis
 // 🚗🚕🚙🚌 Vehicle Emojis
 let animalTheme = Theme(name: "Animals", emojiCards: ["🐨","🐭","🙉","🐔","🦊"], cardColor: animalCardColor)
-let sportTheme = Theme(name: "Sports", emojiCards: ["⚾️","🎱","🏐","🏓"], numberOfCards: 4, cardColor: vehicleCardColor)
+let sportTheme = Theme(name: "Sports", emojiCards: ["⚾️","🎱","🏐","🏓"], numberOfCards: 4, cardColor: sportCardColor)
 let vehicleTheme = Theme(name: "Vehicles", emojiCards: ["🚗","🚕","🚙","🚌"], cardColor: vehicleCardColor)
 
 // Create an enum, cardTheme, which has a case for each theme I created
@@ -42,4 +42,4 @@ internal enum colorTheme: CaseIterable {
     }
 }
 
-var currentTheme: colorTheme = .vehicle
+var currentTheme: colorTheme = colorTheme.allCases.randomElement()!

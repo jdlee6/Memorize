@@ -42,17 +42,22 @@ struct MemoryGame<CardContent> where CardContent: Equatable {
         }
     }
     
-     mutating func newGame() {
-        // Reinitialize the game == turn all the cards face down
-        for index in 0..<cards.count {
+    mutating func newGame() {
+        // Update currentTheme to a random theme
+        let currentTheme = colorTheme.allCases.randomElement()!
+        let newCards = currentTheme.type.emojiCards
+        print(currentTheme)
+        
+        // Reinitialize the game: turn all the cards face down
+        for index in 0..<(cards.count - 1) {
             self.cards[index].isFaceUp = false
             self.cards[index].isMatched = false
+            
+            // Update card content
+            // Todo: Fix index bug (when self.cards & newCards are of different length)
+            // Todo: Need to update the # of the pairs of cards
+            self.cards[index].content = newCards[index] as! CardContent
         }
-        
-        let newTheme = colorTheme.allCases.randomElement()!
-        currentTheme = newTheme
-    
-        // Todo: Figure out how to update cards & number of cards
     }
     
     init(numberOfPairsOfCards: Int, cardContentFactory: (Int) -> CardContent) {

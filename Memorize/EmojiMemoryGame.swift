@@ -39,7 +39,7 @@ class EmojiMemoryGame: ObservableObject {
     }
     
     func newGame() {
-         model.newGame()
+        model.newGame()
     }
 }
 

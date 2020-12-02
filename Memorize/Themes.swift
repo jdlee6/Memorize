@@ -11,6 +11,7 @@ import SwiftUI
 let animalCardColor: Color = .gray
 let sportCardColor: Color = .blue
 let vehicleCardColor: Color = .yellow
+let starCardColor: Color = .green
 
 struct Theme {
     var name: String
@@ -19,27 +20,14 @@ struct Theme {
     var cardColor: Color
 }
 
-// 🐨🐭🙉🐔🦊 Animal Emojis
-// 🏈⚾️🎱🏐🏓 Sport Emojis
-// 🚗🚕🚙🚌 Vehicle Emojis
+let themes = [animalTheme, sportTheme, vehicleTheme, starTheme]
+
 let animalTheme = Theme(name: "Animals", emojiCards: ["🐨","🐭","🙉","🐔","🦊"], cardColor: animalCardColor)
 let sportTheme = Theme(name: "Sports", emojiCards: ["⚾️","🎱","🏐","🏓"], numberOfCards: 4, cardColor: sportCardColor)
 let vehicleTheme = Theme(name: "Vehicles", emojiCards: ["🚗","🚕","🚙","🚌"], cardColor: vehicleCardColor)
+let starTheme = Theme(name: "Stars", emojiCards: ["⭐️","🌟","✨","💥"], cardColor: starCardColor)
 
-// Create an enum, cardTheme, which has a case for each theme I created
-internal enum colorTheme: CaseIterable {
-    case animal, sport, vehicle
-    
-    var type: Theme {
-        switch self {
-        case .animal:
-            return animalTheme
-        case .sport:
-            return sportTheme
-        case .vehicle:
-            return vehicleTheme
-        }
-    }
-}
-
-var currentTheme: colorTheme = colorTheme.allCases.randomElement()!
+// 🐨🐭🙉🐔🦊 Animal Emojis
+// 🏈⚾️🎱🏐🏓 Sport Emojis
+// 🚗🚕🚙🚌 Vehicle Emojis
+// ⭐️🌟✨💥 Star Themes

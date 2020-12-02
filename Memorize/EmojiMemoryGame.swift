@@ -12,25 +12,25 @@ class EmojiMemoryGame: ObservableObject {
     @Published private var model: MemoryGame<String> = EmojiMemoryGame.createMemoryGame()
     
     static func createMemoryGame() -> MemoryGame<String> {
-        // Task: Fetch emojis as well as # of cards from current theme 
-        let emojis: Array<String> = currentTheme.type.emojiCards
-        // Task: if 'numberOfCards' is given from the theme, use that if not then pick a random number of pairs
-        if let randomNumberOfPairsOfCards: Int = currentTheme.type.numberOfCards {
-            return MemoryGame<String>(numberOfPairsOfCards: randomNumberOfPairsOfCards) { pairIndex in
-                return emojis[pairIndex]
-            }
-        } else {
-            return MemoryGame<String>(numberOfPairsOfCards: Int.random(in: 2..<(currentTheme.type.emojiCards.count))) { pairIndex in
-                return emojis[pairIndex]
-                }
-            }
+        var emojiTheme = themes.randomElement()!
+        emojiTheme.emojiCards.shuffle()
+        let emojis = emojiTheme.emojiCards
+        return MemoryGame<String>(theme: emojiTheme) { pairIndex in
+            return emojis[pairIndex]
         }
+    }
         
     // MARK: - Access to the the Model
     var cards: Array<MemoryGame<String>.Card> {
-        // Task: Shuffle the cards
-        // model.cards.shuffled()
         model.cards
+    }
+    
+    var themeName: String {
+        return model.theme.name
+    }
+    
+    var themeColor: Color {
+        return model.theme.cardColor
     }
     
     // MARK: - Intent(s)
@@ -39,7 +39,7 @@ class EmojiMemoryGame: ObservableObject {
     }
     
     func newGame() {
-        model.newGame()
+        model = EmojiMemoryGame.createMemoryGame()
     }
 }
 

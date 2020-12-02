@@ -15,7 +15,7 @@ struct EmojiMemoryGameView: View {
         Group {
             Button("New Game", action: viewModel.newGame)
             .padding()
-            Text(currentTheme.type.name)
+            Text(viewModel.themeName)
             Grid(viewModel.cards) { card in
                     CardView(card: card).onTapGesture {
                         self.viewModel.choose(card:card)
@@ -23,7 +23,7 @@ struct EmojiMemoryGameView: View {
             .padding()
             }
             .padding()
-            .foregroundColor(currentTheme.type.cardColor)
+            .foregroundColor(viewModel.themeColor)
         }
 
     }

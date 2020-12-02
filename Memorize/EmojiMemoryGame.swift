@@ -12,19 +12,29 @@ class EmojiMemoryGame: ObservableObject {
     @Published private var model: MemoryGame<String> = EmojiMemoryGame.createMemoryGame()
     
     static func createMemoryGame() -> MemoryGame<String> {
-        // Task: Start game between random # between 2 and 5 pairs
-        let emojis: Array<String> = ["🎃", "👻", "🕸", "👼🏻", "🤩"]
-        let randomNumberOfPairsOfCards: Int = Int.random(in: 2...emojis.count)
-        return MemoryGame<String>(numberOfPairsOfCards: randomNumberOfPairsOfCards) { pairIndex in
+        var emojiTheme = themes.randomElement()!
+        emojiTheme.emojiCards.shuffle()
+        let emojis = emojiTheme.emojiCards
+        return MemoryGame<String>(theme: emojiTheme, score: 0) { pairIndex in
             return emojis[pairIndex]
         }
     }
         
     // MARK: - Access to the the Model
     var cards: Array<MemoryGame<String>.Card> {
-        // Task: Shuffle the cards
-        // model.cards.shuffled()
         model.cards
+    }
+    
+    var themeName: String {
+        model.theme.name
+    }
+    
+    var themeColor: Color {
+        model.theme.cardColor
+    }
+    
+    var score: Int {
+        model.score
     }
     
     // MARK: - Intent(s)
@@ -32,6 +42,9 @@ class EmojiMemoryGame: ObservableObject {
         model.choose(card: card)
     }
     
+    func newGame() {
+        model = EmojiMemoryGame.createMemoryGame()
+    }
 }
 
 struct EmojiMemoryGame_Previews: PreviewProvider {

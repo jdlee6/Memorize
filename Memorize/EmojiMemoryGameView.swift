@@ -10,16 +10,23 @@ import SwiftUI
 
 struct EmojiMemoryGameView: View {
     @ObservedObject var viewModel: EmojiMemoryGame
-
+    
     var body: some View {
-        Grid(viewModel.cards) { card in
-                CardView(card: card).onTapGesture {
-                    self.viewModel.choose(card:card)
-                }
-        .padding()
+        Group {
+            Button("New Game", action: viewModel.newGame)
+            .padding()
+            Text(viewModel.themeName)
+            Text("\(viewModel.score)") // Text view takes in string
+            Grid(viewModel.cards) { card in
+                    CardView(card: card).onTapGesture {
+                        self.viewModel.choose(card:card)
+                    }
+            .padding()
+            }
+            .padding()
+            .foregroundColor(viewModel.themeColor)
         }
-        .padding()
-        .foregroundColor(Color.orange)
+
     }
 }
 

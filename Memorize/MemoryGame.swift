@@ -8,9 +8,12 @@
 
 import Foundation
 
-struct MemoryGame<CardContent> where CardContent: Equatable {
+struct MemoryGame<CardContent> where CardContent: Equatable & Hashable {
     var cards: Array<Card>
     var theme: Theme
+    var score: Int
+    var seenCards = [CardContent]()
+    var counts = [CardContent:Int]()
     
     var indexOfTheOneAndOnlyFaceUpCard: Int? {
         get {
@@ -25,12 +28,29 @@ struct MemoryGame<CardContent> where CardContent: Equatable {
     
     mutating func choose(card: Card) {
         print("card chosen: \(card)")
-        // Case: if card is face up and not matched
+        
+        // Case: if card is face down and not matched
         if let chosenIndex: Int = cards.firstIndex(matching: card), !cards[chosenIndex].isFaceUp, !cards[chosenIndex].isMatched {
             if let potentialMatchIndex = indexOfTheOneAndOnlyFaceUpCard {
                 if cards[chosenIndex].content == cards[potentialMatchIndex].content {
                     cards[chosenIndex].isMatched = true
                     cards[potentialMatchIndex].isMatched = true
+                    
+                    // Increment score by 2 when match occurs
+                    score += 2
+                    // Remove these cards from seenCards
+                    let newCards = seenCards.filter {$0 != cards[chosenIndex].content}
+                    // Update seenCards without the match
+                    seenCards = newCards
+                    
+                } else if cards[potentialMatchIndex].content != cards[chosenIndex].content  {
+                    let seenCard = cards[potentialMatchIndex].content
+                    seenCards.append(seenCard)
+                    
+                    // if chosen card is already in the seenCards, deduce by 1
+                    if seenCards.contains(cards[potentialMatchIndex].content) {
+                        score -= 1
+                    }
                 }
                 self.cards[chosenIndex].isFaceUp = true
             // Case: 0 or more than 1 card -> turn all the cards face down EXCEPT the one we chose
@@ -41,7 +61,7 @@ struct MemoryGame<CardContent> where CardContent: Equatable {
     }
     
     // Intialize the model with a theme
-    init(theme: Theme, cardContentFactory: (Int) -> CardContent) {
+    init(theme: Theme, score: Int, cardContentFactory: (Int) -> CardContent) {
         cards = Array<Card>()
         // Case: numberOfCards arg. is given
         if let pairOfcards = theme.numberOfCards {
@@ -62,6 +82,7 @@ struct MemoryGame<CardContent> where CardContent: Equatable {
         // Task: Shuffle cards
         cards.shuffle()
         self.theme = theme
+        self.score = score
     }
     
     struct Card: Identifiable {

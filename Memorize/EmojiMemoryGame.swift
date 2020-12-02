@@ -15,7 +15,7 @@ class EmojiMemoryGame: ObservableObject {
         var emojiTheme = themes.randomElement()!
         emojiTheme.emojiCards.shuffle()
         let emojis = emojiTheme.emojiCards
-        return MemoryGame<String>(theme: emojiTheme) { pairIndex in
+        return MemoryGame<String>(theme: emojiTheme, score: 0) { pairIndex in
             return emojis[pairIndex]
         }
     }
@@ -26,11 +26,15 @@ class EmojiMemoryGame: ObservableObject {
     }
     
     var themeName: String {
-        return model.theme.name
+        model.theme.name
     }
     
     var themeColor: Color {
-        return model.theme.cardColor
+        model.theme.cardColor
+    }
+    
+    var score: Int {
+        model.score
     }
     
     // MARK: - Intent(s)

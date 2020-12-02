@@ -16,6 +16,7 @@ struct EmojiMemoryGameView: View {
             Button("New Game", action: viewModel.newGame)
             .padding()
             Text(viewModel.themeName)
+            Text("\(viewModel.score)") // Text view takes in string
             Grid(viewModel.cards) { card in
                     CardView(card: card).onTapGesture {
                         self.viewModel.choose(card:card)

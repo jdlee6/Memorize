@@ -8,14 +8,19 @@
 
 import Foundation
 
-struct MemoryGame<CardContent> where CardContent: Equatable & Hashable {
-    var cards: Array<Card>
+struct MemoryGame<CardContent> where CardContent: Equatable {
+    // we could make our cards private
+    // reason why is b.c we don't want anyone else to mess with these cards
+    // ie: manually setting .isMatched or .isFaceUp values
+    private(set) var cards: Array<Card>
     var theme: Theme
     var score: Int
     var seenCards = [CardContent]()
-    var counts = [CardContent:Int]()
-    
-    var indexOfTheOneAndOnlyFaceUpCard: Int? {
+
+    // access control can also be used for functions and internal variables
+    // private logic
+    // if exposed it can mess up our logic
+    private var indexOfTheOneAndOnlyFaceUpCard: Int? {
         get {
             cards.indices.filter { cards[$0].isFaceUp }.only
         }
@@ -26,9 +31,9 @@ struct MemoryGame<CardContent> where CardContent: Equatable & Hashable {
         }
     }
     
+    // this shouldn't be private b.c this is how people play the game
     mutating func choose(card: Card) {
         print("card chosen: \(card)")
-        
         // Case: if card is face down and not matched
         if let chosenIndex: Int = cards.firstIndex(matching: card), !cards[chosenIndex].isFaceUp, !cards[chosenIndex].isMatched {
             if let potentialMatchIndex = indexOfTheOneAndOnlyFaceUpCard {
@@ -85,6 +90,7 @@ struct MemoryGame<CardContent> where CardContent: Equatable & Hashable {
         self.score = score
     }
     
+    // this doesn't need to be private b/c it's being used in 'cards' as Array<Card> which is a private(set)
     struct Card: Identifiable {
         var isFaceUp: Bool = false
         var isMatched: Bool = false

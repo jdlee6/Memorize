@@ -9,6 +9,8 @@
 import SwiftUI
 
 struct EmojiMemoryGameView: View {
+    // viewModel should always be public b/c it is being used in the preview function below
+    // and also in SceneDelegate.swift
     @ObservedObject var viewModel: EmojiMemoryGame
     
     var body: some View {
@@ -31,15 +33,20 @@ struct EmojiMemoryGameView: View {
 }
 
 struct CardView: View {
+    // this shouldn't be private b/c we are using it in EmojiMemoryGameView
+    // if we made this private then we would be able to pass it as an argument
     var card: MemoryGame<String>.Card
     
+    // this shouldn't be private b/c the system is going to call that
+    // this is how it gets the body for our View
     var body: some View {
         GeometryReader { geometry in
             self.body(for: geometry.size)
         }
     }
 
-    func body(for size: CGSize) -> some View {
+    // helper function should be private
+    private func body(for size: CGSize) -> some View {
         ZStack {
               if card.isFaceUp {
                   RoundedRectangle(cornerRadius: cornerRadius).fill(Color.white)
@@ -56,10 +63,10 @@ struct CardView: View {
     }
     
     // MARK: - Drawing Constants
-    let cornerRadius: CGFloat = 10
-    let edgeLineWidth: CGFloat = 3
-    
-    func fontSize(for size: CGSize) -> CGFloat {
+    // these should be private since there shouldn't be a reason for anyone to change these
+    private let cornerRadius: CGFloat = 10
+    private let edgeLineWidth: CGFloat = 3
+    private func fontSize(for size: CGSize) -> CGFloat {
         min(size.width, size.height) * 0.75
     }
 }

@@ -9,6 +9,10 @@
 import SwiftUI
 
 struct GridLayout {
+    // important to make these all be private(set)
+    // these are calculated that come through the init(...) which is public
+    // if we didnt make these private, someone might think that they can reset these vars
+    // thats why you should make these vars only readable
     var size: CGSize
     var rowCount: Int = 0
     var columnCount: Int = 0

@@ -9,9 +9,11 @@
 import SwiftUI
 
 class EmojiMemoryGame: ObservableObject {
+    // 'private' is an example of Access Control
     @Published private var model: MemoryGame<String> = EmojiMemoryGame.createMemoryGame()
     
-    static func createMemoryGame() -> MemoryGame<String> {
+    // this should be private b/c we don't other people creating a memory game
+    private static func createMemoryGame() -> MemoryGame<String> {
         let emojiTheme = themes.randomElement()!
         let emojis = emojiTheme.emojiCards
         return MemoryGame<String>(theme: emojiTheme, score: 0) { pairIndex in

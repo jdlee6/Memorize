@@ -15,10 +15,10 @@ struct EmojiMemoryGameView: View {
     
     var body: some View {
         Group {
-            Button("New Game", action: viewModel.newGame)
-            .padding()
-            Text(viewModel.themeName)
-            Text("\(viewModel.score)") // Text view takes in string
+//            Button("New Game", action: viewModel.newGame)
+//            .padding()
+//            Text(viewModel.themeName)
+//            Text("\(viewModel.score)") // Text view takes in string
             Grid(viewModel.cards) { card in
                     CardView(card: card).onTapGesture {
                         self.viewModel.choose(card:card)
@@ -33,25 +33,23 @@ struct EmojiMemoryGameView: View {
 }
 
 struct CardView: View {
-    // this shouldn't be private b/c we are using it in EmojiMemoryGameView
-    // if we made this private then we would be able to pass it as an argument
     var card: MemoryGame<String>.Card
-    
-    // this shouldn't be private b/c the system is going to call that
-    // this is how it gets the body for our View
+
     var body: some View {
         GeometryReader { geometry in
             self.body(for: geometry.size)
         }
     }
 
-    // helper function should be private
     private func body(for size: CGSize) -> some View {
         ZStack {
               if card.isFaceUp {
                   RoundedRectangle(cornerRadius: cornerRadius).fill(Color.white)
                   RoundedRectangle(cornerRadius: cornerRadius).stroke(lineWidth: edgeLineWidth)
-                  Text(card.content)
+                Pie(startAngle: Angle.degrees(0-90), endAngle: Angle.degrees(110-90), clockwise: true)
+                    .padding(5).opacity(0.4)
+                    Text(card.content)
+                
               } else {
                 if !card.isMatched {
                     RoundedRectangle(cornerRadius: cornerRadius).fill()
@@ -67,12 +65,15 @@ struct CardView: View {
     private let cornerRadius: CGFloat = 10
     private let edgeLineWidth: CGFloat = 3
     private func fontSize(for size: CGSize) -> CGFloat {
-        min(size.width, size.height) * 0.75
+        min(size.width, size.height) * 0.7
     }
 }
 
+// We can tweak this so that the 1st card can be previewed as face up
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        EmojiMemoryGameView(viewModel: EmojiMemoryGame())
+        let game = EmojiMemoryGame()
+        game.choose(card: game.cards[0])
+        return EmojiMemoryGameView(viewModel: game)
     }
 }

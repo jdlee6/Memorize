@@ -15,10 +15,10 @@ struct EmojiMemoryGameView: View {
     
     var body: some View {
         Group {
-//            Button("New Game", action: viewModel.newGame)
-//            .padding()
-//            Text(viewModel.themeName)
-//            Text("\(viewModel.score)") // Text view takes in string
+            Button("New Game", action: viewModel.newGame)
+            .padding()
+            Text(viewModel.themeName)
+            Text("\(viewModel.score)") // Text view takes in string
             Grid(viewModel.cards) { card in
                     CardView(card: card).onTapGesture {
                         self.viewModel.choose(card:card)
@@ -28,7 +28,6 @@ struct EmojiMemoryGameView: View {
             .padding()
             .foregroundColor(viewModel.themeColor)
         }
-
     }
 }
 
@@ -41,33 +40,31 @@ struct CardView: View {
         }
     }
 
+    // the follow is interpreted as a list of Views
+    // it's either going to be a ZStack or an EmptyView
+    // so there's no need to define the else case
+    @ViewBuilder
     private func body(for size: CGSize) -> some View {
-        ZStack {
-              if card.isFaceUp {
-                  RoundedRectangle(cornerRadius: cornerRadius).fill(Color.white)
-                  RoundedRectangle(cornerRadius: cornerRadius).stroke(lineWidth: edgeLineWidth)
+        // Matching Logic
+        // Only show this is card isFaceup or if its not matched
+        if card.isFaceUp || !card.isMatched {
+            ZStack {
+                // This section will be used and cardify will be called
                 Pie(startAngle: Angle.degrees(0-90), endAngle: Angle.degrees(110-90), clockwise: true)
                     .padding(5).opacity(0.4)
                     Text(card.content)
-                
-              } else {
-                if !card.isMatched {
-                    RoundedRectangle(cornerRadius: cornerRadius).fill()
-                }
-                // Draws nothing if card is matched
-              }
-          }
-        .font(Font.system(size: fontSize(for: size)))
+            }
+                .cardify(isFaceUp: card.isFaceUp)
+                .font(Font.system(size: fontSize(for: size)))
+        }
     }
-    
+        
     // MARK: - Drawing Constants
-    // these should be private since there shouldn't be a reason for anyone to change these
-    private let cornerRadius: CGFloat = 10
-    private let edgeLineWidth: CGFloat = 3
     private func fontSize(for size: CGSize) -> CGFloat {
         min(size.width, size.height) * 0.7
     }
 }
+
 
 // We can tweak this so that the 1st card can be previewed as face up
 struct ContentView_Previews: PreviewProvider {

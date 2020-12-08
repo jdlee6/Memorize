@@ -9,8 +9,6 @@
 import SwiftUI
 
 struct EmojiMemoryGameView: View {
-    // viewModel should always be public b/c it is being used in the preview function below
-    // and also in SceneDelegate.swift
     @ObservedObject var viewModel: EmojiMemoryGame
     
     var body: some View {
@@ -39,23 +37,25 @@ struct CardView: View {
             self.body(for: geometry.size)
         }
     }
-
-    // the follow is interpreted as a list of Views
-    // it's either going to be a ZStack or an EmptyView
-    // so there's no need to define the else case
+    
     @ViewBuilder
     private func body(for size: CGSize) -> some View {
-        // Matching Logic
-        // Only show this is card isFaceup or if its not matched
         if card.isFaceUp || !card.isMatched {
             ZStack {
-                // This section will be used and cardify will be called
+                // content
                 Pie(startAngle: Angle.degrees(0-90), endAngle: Angle.degrees(110-90), clockwise: true)
                     .padding(5).opacity(0.4)
                     Text(card.content)
+                    .font(Font.system(size: fontSize(for: size)))
+                    // rotate card 180 degrees on a match
+                    .rotationEffect(Angle.degrees(card.isMatched ? 360 : 0))
+                    // to animate it, we will do it IMPLICITLY (but ONLY animates 1 of the cards)
+                    // in order to prevent the animation to start from a new game
+                // we will make it so it only shows this when the card is matched
+                    // .default is used to state NOT to use the animation
+                    .animation(card.isMatched ? Animation.linear(duration: 1).repeatForever(autoreverses: false) : .default)
             }
                 .cardify(isFaceUp: card.isFaceUp)
-                .font(Font.system(size: fontSize(for: size)))
         }
     }
         

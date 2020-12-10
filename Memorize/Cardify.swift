@@ -11,7 +11,10 @@ import SwiftUI // View modifiers are a UI thing
 struct Cardify: ViewModifier {
     var isFaceUp: Bool
     
-    // content refers to whatever View that we're mutating
+    // We're going to modify this so that it will be able to rotate itself over the y axis (3D)
+    // We're also going to coordinate what is being displayed depending on that coordination
+    // 1st half of the rotation - face up
+    // 2nd half of the rotation - face down
     func body(content: Content) -> some View {
         ZStack {
             if isFaceUp {

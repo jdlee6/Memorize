@@ -13,13 +13,21 @@ struct EmojiMemoryGameView: View {
     
     var body: some View {
         Group {
-            Button("New Game", action: viewModel.newGame)
+            Button("New Game", action: {
+                // Explicit animation
+                withAnimation(.easeInOut(duration: 1)) {
+                    self.viewModel.newGame()
+                }
+            })
             .padding()
             Text(viewModel.themeName)
             Text("\(viewModel.score)") // Text view takes in string
             Grid(viewModel.cards) { card in
                     CardView(card: card).onTapGesture {
-                        self.viewModel.choose(card:card)
+                        // Explicit animation for choosing a card
+                        withAnimation(.linear(duration: 1)) {
+                            self.viewModel.choose(card:card)
+                        }
                     }
             .padding()
             }
@@ -40,6 +48,7 @@ struct CardView: View {
     
     @ViewBuilder
     private func body(for size: CGSize) -> some View {
+        // when neither happens - it transitions out of the view
         if card.isFaceUp || !card.isMatched {
             ZStack {
                 // content
@@ -47,15 +56,15 @@ struct CardView: View {
                     .padding(5).opacity(0.4)
                     Text(card.content)
                     .font(Font.system(size: fontSize(for: size)))
-                    // rotate card 180 degrees on a match
                     .rotationEffect(Angle.degrees(card.isMatched ? 360 : 0))
-                    // to animate it, we will do it IMPLICITLY (but ONLY animates 1 of the cards)
-                    // in order to prevent the animation to start from a new game
-                // we will make it so it only shows this when the card is matched
-                    // .default is used to state NOT to use the animation
                     .animation(card.isMatched ? Animation.linear(duration: 1).repeatForever(autoreverses: false) : .default)
             }
                 .cardify(isFaceUp: card.isFaceUp)
+                // Hint: for hw - look at docs and look into .offset
+                .transition(AnyTransition.scale)
+                // We want the rotation to happen on the vertical y axis
+                // It rotates but its fading in the back the emoji of the card
+                .rotation3DEffect(Angle.degrees(card.isFaceUp ? 0 : 180), axis: (0,1,0))
         }
     }
         

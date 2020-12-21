@@ -14,18 +14,16 @@ struct EmojiMemoryGameView: View {
     var body: some View {
         Group {
             Button("New Game", action: {
-                // Explicit animation
-                withAnimation(.easeInOut(duration: 1)) {
+                withAnimation(.easeInOut) {
                     self.viewModel.newGame()
                 }
             })
             .padding()
             Text(viewModel.themeName)
-            Text("\(viewModel.score)") // Text view takes in string
+            Text("\(viewModel.score)")
             Grid(viewModel.cards) { card in
                     CardView(card: card).onTapGesture {
-                        // Explicit animation for choosing a card
-                        withAnimation(.linear(duration: 1)) {
+                        withAnimation(.linear(duration: 0.75)) {
                             self.viewModel.choose(card:card)
                         }
                     }
@@ -62,13 +60,11 @@ struct CardView: View {
                 .cardify(isFaceUp: card.isFaceUp)
                 // Hint: for hw - look at docs and look into .offset
                 .transition(AnyTransition.scale)
-                // We want the rotation to happen on the vertical y axis
-                // It rotates but its fading in the back the emoji of the card
-                .rotation3DEffect(Angle.degrees(card.isFaceUp ? 0 : 180), axis: (0,1,0))
         }
     }
         
     // MARK: - Drawing Constants
+    // Todo: define constants / args. to modifiers here
     private func fontSize(for size: CGSize) -> CGFloat {
         min(size.width, size.height) * 0.7
     }

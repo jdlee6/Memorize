@@ -6,29 +6,45 @@
 //  Copyright © 2020 Joe Lee. All rights reserved.
 //
 
-import SwiftUI // View modifiers are a UI thing
+import SwiftUI
 
-struct Cardify: ViewModifier {
-    var isFaceUp: Bool
+// A modifier that can create another modifier with animation
+// protocols 'ViewModifier' & 'Animatable' in 1
+struct Cardify: AnimatableModifier {
+    var rotation: Double
     
-    // We're going to modify this so that it will be able to rotate itself over the y axis (3D)
-    // We're also going to coordinate what is being displayed depending on that coordination
-    // 1st half of the rotation - face up
-    // 2nd half of the rotation - face down
+    init(isFaceUp: Bool) {
+        rotation = isFaceUp ? 0 : 180
+    }
+    
+    // define animatableData (required by protocol Animatable)
+    // we are animating the rotation which is a double
+    // this is the name that the Animatable protocol is looking for
+    var animatableData: Double {
+        get { return rotation }
+        set { rotation = newValue }
+    }
+    
+    // isFaceUp is true if rotation is less than 90
+    var isFaceUp: Bool {
+        rotation < 90
+    }
+    
     func body(content: Content) -> some View {
         ZStack {
-            if isFaceUp {
-              RoundedRectangle(cornerRadius: cornerRadius).fill(Color.white)
-              RoundedRectangle(cornerRadius: cornerRadius).stroke(lineWidth: edgeLineWidth)
-              content // this is where content will be displayed
-            } else {
-                // Matching should not be within this cardify view
-                // That way this can this 'Cardify' modifier can be used for other things
-                RoundedRectangle(cornerRadius: cornerRadius).fill()
+            // when its face down we won't be able to see this grouped view
+            Group {
+                RoundedRectangle(cornerRadius: cornerRadius).fill(Color.white)
+                RoundedRectangle(cornerRadius: cornerRadius).stroke(lineWidth: edgeLineWidth)
+                content // text is always on screen
             }
-          }
-    }
-    // these should be private since there shouldn't be a reason for anyone to change these
+                .opacity(isFaceUp ? 1 : 0) // if face up, fully opaque
+            RoundedRectangle(cornerRadius: cornerRadius).fill()
+                .opacity(isFaceUp ? 0 : 1)
+            }
+            .rotation3DEffect(Angle.degrees(rotation), axis: (0,1,0))
+      }
+    
     private let cornerRadius: CGFloat = 10
     private let edgeLineWidth: CGFloat = 3
 }

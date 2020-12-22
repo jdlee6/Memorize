@@ -40,7 +40,7 @@ struct Cardify: AnimatableModifier {
             }
                 .opacity(isFaceUp ? 1 : 0) // if face up, fully opaque
             RoundedRectangle(cornerRadius: cornerRadius).fill()
-                .opacity(isFaceUp ? 0 : 1)
+                .opacity(isFaceUp ? 0 : 1) // if face down, not opaque
             }
             .rotation3DEffect(Angle.degrees(rotation), axis: (0,1,0))
       }

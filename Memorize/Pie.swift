@@ -8,11 +8,23 @@
 
 import SwiftUI
 
+// Shape protocol already has the Animatable Protocol apart of it
 struct Pie: Shape {
     // need to create angles
     var startAngle: Angle
     var endAngle: Angle
     var clockwise: Bool = false
+    
+    // we will be animating the Angle
+    // we want to animate 2 things (startAngle and endAngle) at once so we will use the AnimatablePair protocol
+    var animatableData: AnimatablePair<Double, Double> {
+        get {
+            AnimatablePair(startAngle.radians, endAngle.radians)
+        } set {
+            startAngle = Angle.radians(newValue.first)
+            endAngle = Angle.radians(newValue.second)
+        }
+    }
     
     // rect is the area where we are supposed to fit our shape
     // space offered to it

@@ -92,8 +92,21 @@ struct MemoryGame<CardContent> where CardContent: Equatable {
     
     // this doesn't need to be private b/c it's being used in 'cards' as Array<Card> which is a private(set)
     struct Card: Identifiable {
-        var isFaceUp: Bool = false
-        var isMatched: Bool = false
+        // property observers
+        var isFaceUp: Bool = false {
+            didSet {
+                if isFaceUp {
+                    startUsingBonusTime()
+                } else {
+                    stopUsingBonusTime()
+                }
+            }
+        }
+        var isMatched: Bool = false {
+            didSet {
+                stopUsingBonusTime()
+            }
+        }
         var content: CardContent
         var id: Int
     

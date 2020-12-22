@@ -43,14 +43,37 @@ struct CardView: View {
             self.body(for: geometry.size)
         }
     }
+
+    // we want this to be synced up everytime this view appears on screen
+    @State private var animatedBonusRemaining: Double = 0
+    
+    private func startBonusTimeAnimation() {
+        // sync up the modeland then
+        animatedBonusRemaining = card.bonusRemaining
+        // animate it ticking down to 0
+        withAnimation(.linear(duration: card.bonusTimeRemaining)) {
+             animatedBonusRemaining = 0
+        }
+    }
     
     @ViewBuilder
     private func body(for size: CGSize) -> some View {
         // when neither happens - it transitions out of the view
         if card.isFaceUp || !card.isMatched {
             ZStack {
-                // content
-                Pie(startAngle: Angle.degrees(0-90), endAngle: Angle.degrees(110-90), clockwise: true)
+                Group {
+                    // if faceup, not matched, bonustime > 0
+                    if card.isConsumingBonusTime {
+                        Pie(startAngle: Angle.degrees(0-90), endAngle: Angle.degrees(-animatedBonusRemaining*360-90), clockwise: true)
+                            .onAppear {
+                                self.startBonusTimeAnimation()
+                            }
+                    } else {
+                        // dont care when it appears
+                        Pie(startAngle: Angle.degrees(0-90), endAngle: Angle.degrees(-card.bonusRemaining*360-90), clockwise: true)
+                    }
+                }
+                    // Need to Group the Views and then apply the padding here
                     .padding(5).opacity(0.4)
                     Text(card.content)
                     .font(Font.system(size: fontSize(for: size)))
